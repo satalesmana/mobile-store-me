@@ -18,6 +18,8 @@
 	<script src="lib/menu.js"></script>
 </head>
 <body>
+    <div id="loading-mask">Loading&#8230;</div>
+
     <div data-role="page" class="jqm-demos jqm-home">
         <div data-role="header" class="jqm-header">
             <h2><img src="lib/_assets/img/jquery-logo.png" alt="jQuery Mobile"></h2>
@@ -55,9 +57,14 @@
                 method:'GET',
                 url: BASE_URL + "/api/produk/"+produk_id+"/edit",
                 dataType:'json',
+                beforeSend:function(){
+                    $('#loading-mask').addClass('loading')
+                },
                 success:function(res){
                     console.log(res)
                 }
+            }).done(function(){
+                $('#loading-mask').removeClass('loading')  
             })
         }
     });
