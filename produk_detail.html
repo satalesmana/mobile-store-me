@@ -25,7 +25,9 @@
             <a href="#" class="jqm-navmenu-link ui-btn ui-btn-icon-notext ui-corner-all ui-icon-bars ui-nodisc-icon ui-alt-icon ui-btn-left">Menu</a>
         </div>
 
-        <div role="main" id="content" class="ui-content jqm-content"></div>
+        <div role="main" id="content" class="ui-content jqm-content">
+            asdfsadf
+        </div>
 
         <div data-role="panel" 
             class="jqm-navmenu-panel" 
@@ -35,40 +37,28 @@
             <ul class="jqm-list ui-alt-icon ui-nodisc-icon" id="menu_component"></ul>
         </div>
     </div>
-    <script>
-        $(document).ready(function(){
-            let BASE_URL = 'https://app-store-ci.herokuapp.com'
-
-            $.ajax({
-                method:'GET',
-                url: BASE_URL + "/api/kategori",
-                dataType:'json',
-                success:function(res){
-                    let i = 0;
-                    if(res.data.length > 0){
-                        let loop = setInterval(() => {
-                            let output = ""
-                            output +=`<div class="card-categori animate order-${i}">`
-                            output +='<div class="kategori-title">'+res.data[i].nama_kategori+'</div>'
-                            output +='<div>'+res.data[i].deskripsi+'</div>'
-                            output +='</div>'
-                            $('#content').append(output);
-                            $( `.animate.order-${i}` ).effect( "slide");
-                            i++;
-                            if(i >= res.data.length){
-                                clearInterval(loop);
-                            }
-                        }, 500);
-                    }
-                                        
-                }
-            })
-        })
-    </script>
 </body>
 
-<style>
-    .jqm-demos .jqm-content{
-        padding-top:0 !important;
+<script>
+    function $_GET(q,s) {
+        s = (s) ? s : window.location.search;
+        var re = new RegExp('&amp;'+q+'=([^&amp;]*)','i');
+        return (s=s.replace(/^\?/,'&amp;').match(re)) ?s=s[1] :s='';
     }
-</style>
+
+    $(document).ready(function(){
+        let BASE_URL = 'https://app-store-ci.herokuapp.com'
+        let produk_id = $_GET('id');
+
+        if(typeof produk_id !== "undefined"){
+            $.ajax({
+                method:'GET',
+                url: BASE_URL + "/api/produk/"+produk_id+"/edit",
+                dataType:'json',
+                success:function(res){
+                    console.log(res)
+                }
+            })
+        }
+    });
+</script>

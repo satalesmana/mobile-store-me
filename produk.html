@@ -9,6 +9,8 @@
 	<link rel="stylesheet" href="lib/_assets/css/jqm-demos.css">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
     <link rel="stylesheet" href="lib/style.css">
+    <link rel="stylesheet" href="lib/jquery-ui/jquery-ui.css">
+
 	<script src="lib/js/jquery.js"></script>
 	<script src="lib/_assets/js/index.js"></script>
 	<script src="lib/js/jquery.mobile-1.4.5.min.js"></script>
@@ -17,13 +19,30 @@
 <body>
     <div data-role="page" class="jqm-demos jqm-home">
         <div data-role="header" class="jqm-header">
-            <h2><img src="lib/_assets/img/jquery-logo.png" alt="jQuery Mobile"></h2>
-            <p>Version <span class="jqm-version"></span></p>
+            <h2><img src="lib/_assets/img/jquery-logo.png" alt="jQuery Mobile"></h2>    
             <a href="#" class="jqm-navmenu-link ui-btn ui-btn-icon-notext ui-corner-all ui-icon-bars ui-nodisc-icon ui-alt-icon ui-btn-left">Menu</a>
         </div>
 
-        <div role="main" id="content" class="ui-content jqm-content">
-            ini area Produk
+        <div role="main" id="content">
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <input type="text" class="">
+                </div>
+                <div class="ui-block-b" style=" padding-top: 10px; padding-left: 10px;">
+                    <div data-role="controlgroup" type="horizontal">
+                        <a href="#" style="display: inline !important;" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-search ui-btn-b">Search</a>
+                        <a href="#" style="display: inline !important;" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-grid ui-btn-b"></a>
+                    </div>
+                </div>
+            </div> 
+            <div id="product" style="padding-top: 15px;">
+                <ul 
+                    data-role="listview" 
+                    data-inset="true" 
+                    id="produk_list">
+                </ul>
+            </div>
+               
         </div>
 
         <div data-role="panel" 
@@ -35,3 +54,54 @@
         </div>
     </div>
 </body>
+
+<script>
+    $(document).ready(function(){
+        let BASE_URL = 'https://app-store-ci.herokuapp.com'
+
+        $( "#controlgroup" ).controlgroup();
+
+        $.fn.buildTemplates = function(data){
+            var html = '<li class=" ui-li-has-thumb ui-first-child" onClick="$(this).onViewDetail()" data-id="'+data.produk_id+'">';
+                    html += '<a class="ui-btn ui-btn-icon-right ui-icon-carat-r" href="#" >';
+                        html += '<img src="https://demos.jquerymobile.com/1.4.5//_assets/img/album-bb.jpg">';
+                        html += '<h2>'+data.nama_produk+'</h2>';
+                        html += '<p>'+data.kategori.nama_kategori+" | "+data.keterangan+'</p>';
+                    html += '</a>';
+                html += '</li>';
+
+            $("#produk_list").append(html)
+        }
+
+        $.fn.loadData = function(){
+            $.ajax({
+                method:'GET',
+                url: BASE_URL + "/api/produk",
+                dataType:'json',
+                success:function(res){
+                    res.map(data=> $(this).buildTemplates(data));                                
+                }
+            })
+        }
+
+        $.fn.onViewDetail = function(){
+            let produk_id = $(this).data("id")
+            window.location.href = 'produk_detail.html?id='+produk_id
+        };
+
+        $(this).loadData();
+    });
+</script>
+
+<style>
+    
+    .jqm-home .ui-grid-a{
+        margin-top: 0 !important;
+    }
+    #content{
+        padding: 15px;
+    }
+    input{
+        display: inline !important;
+    }
+</style>
