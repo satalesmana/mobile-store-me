@@ -62,7 +62,7 @@
         $( "#controlgroup" ).controlgroup();
 
         $.fn.buildTemplates = function(data){
-            var html = '<li class=" ui-li-has-thumb ui-first-child" onClick="$(this).onViewDetail()" data-id="'+data.produk_id+'">';
+            var html = '<li class=" ui-li-has-thumb ui-first-child" onClick="$(this).onViewDetail()" data-id="'+data.id+'">';
                     html += '<a class="ui-btn ui-btn-icon-right ui-icon-carat-r" href="#" >';
                         html += '<img src="https://demos.jquerymobile.com/1.4.5//_assets/img/album-bb.jpg">';
                         html += '<h2>'+data.nama_produk+'</h2>';
@@ -85,8 +85,8 @@
         }
 
         $.fn.onViewDetail = function(){
-            let produk_id = $(this).data("id")
-            window.location.href = 'produk_detail.html?id='+produk_id
+            let id = $(this).data("id")
+            window.location.href = 'produk_detail.html?id='+id
         };
 
         $(this).loadData();
